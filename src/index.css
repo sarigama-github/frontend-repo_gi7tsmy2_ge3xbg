@@ -15,32 +15,77 @@
   html {
     font-family: var(--font-sans);
     font-feature-settings: "rlig" 1, "calt" 1;
+    color-scheme: dark;
+    background: #070a0f;
   }
 
   body {
-    @apply antialiased;
+    @apply antialiased text-white;
   }
 }
 
-/* Custom utility classes for shadcn/ui patterns */
-@layer utilities {
-  .animate-in {
-    animation-name: animateIn;
-    animation-duration: 350ms;
-    --tw-enter-opacity: initial;
-    --tw-enter-scale: initial;
-    --tw-enter-rotate: initial;
-    --tw-enter-translate-x: initial;
-    --tw-enter-translate-y: initial;
+/* Utilities common to the site */
+@layer components {
+  .glass-panel {
+    @apply relative rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.04)] sm:p-8;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 80px rgba(34, 211, 238, 0.08), 0 0 80px rgba(168, 85, 247, 0.06);
   }
 
-  .animate-out {
-    animation-name: animateOut;
-    animation-duration: 350ms;
-    --tw-exit-opacity: initial;
-    --tw-exit-scale: initial;
-    --tw-exit-rotate: initial;
-    --tw-exit-translate-x: initial;
-    --tw-exit-translate-y: initial;
+  .fractal-grid {
+    background-image:
+      linear-gradient(rgba(88, 101, 242, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(88, 101, 242, 0.07) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px;
+    background-position: 0 0, 0 0;
+    mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 80%);
+    animation: gridShift 30s linear infinite;
   }
+
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.95), rgba(59, 130, 246, 0.4), rgba(167, 139, 250, 0.2));
+    box-shadow:
+      0 0 6px rgba(34, 211, 238, 0.6),
+      0 0 12px rgba(59, 130, 246, 0.5),
+      0 0 20px rgba(167, 139, 250, 0.4);
+    opacity: 0.9;
+    animation-name: particleFloat;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  .animate-draw {
+    stroke-dasharray: 8 10;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.35));
+    animation: dash 6s linear infinite;
+  }
+}
+
+/* Keyframes */
+@keyframes gridShift {
+  0% { background-position: 0 0, 0 0; }
+  50% { background-position: 40px 20px, 20px 40px; }
+  100% { background-position: 0 0, 0 0; }
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+  25% { transform: translateY(-15px) translateX(4px); opacity: 1; }
+  50% { transform: translateY(-30px) translateX(0); opacity: 0.85; }
+  75% { transform: translateY(-45px) translateX(-4px); opacity: 1; }
+  100% { transform: translateY(-60px) translateX(0); opacity: 0.7; }
+}
+
+@keyframes dash {
+  to { stroke-dashoffset: -200; }
+}
+
+@keyframes parallax {
+  0% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(0,-20px,0); }
+  100% { transform: translate3d(0,0,0); }
 }
